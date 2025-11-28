@@ -1,0 +1,100 @@
+<div class="upload-section">
+  <h2>Upload Products</h2>
+
+  <input type="file" (change)="onFilesSelected($event)" multiple />
+
+  <div *ngIf="selectedFiles.length">
+    <h3>Metadata (auto-filled, editable)</h3>
+    <div
+      *ngFor="let meta of metadataList; let i = index; trackBy: trackByIndex"
+      class="meta-row"
+    >
+      <strong>{{ selectedFiles[i]?.name }}</strong>
+      <div class="meta-fields">
+        <label>
+          Name:
+          <input [(ngModel)]="meta.name" />
+        </label>
+        <label>
+          SKU:
+          <input [(ngModel)]="meta.sku" />
+        </label>
+        <label>
+          Price:
+          <input type="number" [(ngModel)]="meta.price" />
+        </label>
+        <label>
+          Description:
+          <input [(ngModel)]="meta.description" />
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <button (click)="upload()" [disabled]="uploadInProgress || !selectedFiles.length">
+    Upload
+  </button>
+
+  <div *ngIf="uploadInProgress" class="progress-container">
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="uploadProgress"></div>
+    </div>
+    <span>{{ uploadProgress }}%</span>
+  </div>
+</div>
+
+<hr />
+
+<div class="list-section">
+  <h2>Product List</h2>
+
+  <div *ngIf="productsPage?.content?.length; else noProducts">
+    <table>
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>SKU</th>
+        <th>Price</th>
+        <th>Description</th>
+        <th>Image</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let p of productsPage!.content">
+        <td>{{ p.metadata.name }}</td>
+        <td>{{ p.metadata.sku }}</td>
+        <td>{{ p.metadata.price | number: '1.2-2' }}</td>
+        <td>{{ p.metadata.description }}</td>
+        <td>
+          <a [href]="imageHref(p)" target="_blank">Open image</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div class="pagination">
+      <button (click)="loadPage(currentPage - 1)" [disabled]="currentPage === 0">
+        Prev
+      </button>
+
+      <button
+        *ngFor="let i of range(totalPages())"
+        (click)="loadPage(i)"
+        [class.active]="i === currentPage"
+      >
+        {{ i + 1 }}
+      </button>
+
+      <button
+        (click)="loadPage(currentPage + 1)"
+        [disabled]="currentPage >= totalPages() - 1"
+      >
+        Next
+      </button>
+    </div>
+  </div>
+
+  <ng-template #noProducts>
+    <p>No products yet.</p>
+  </ng-template>
+</div>
