@@ -6,4 +6,4 @@ server:
 file:
   storage:
     # root-path: ${FILE_STORAGE_ROOT:/opt/app/images}
-    root-path: /home/dico/Desktop/log:/opt/app/images
+    root-path: /home/dico/Desktop/log

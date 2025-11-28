@@ -7,7 +7,9 @@ import com.assignment.laans.models.ProductPage;
 import com.assignment.laans.service.ProductStorageService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,7 +36,7 @@ public class ProductController {
      * - metadata: JSON array of ProductMetadata objects, same length as images
      */
     @PostMapping(value = "/bulk-upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public List<Product> bulkUpload(
+    public ResponseEntity<?> bulkUpload(
             @RequestPart("images") List<MultipartFile> images,
             @RequestPart("metadata") String metadataJson
     ) throws IOException {
@@ -54,7 +56,7 @@ public class ProductController {
             saved.add(productStorageService.saveProduct(images.get(i), metadataList.get(i)));
         }
 
-        return saved;
+        return new ResponseEntity<>(saved, HttpStatus.OK);
     }
 
     @GetMapping
