@@ -13,13 +13,13 @@ import { ProductPage } from '../models/product/product-page';
   providedIn: 'root',
 })
 export class ProductService {
-  private productsSubject = new BehaviorSubject<Product[]>([]);
-  private loadingSubject = new BehaviorSubject<boolean>(false);
-  private errorSubject = new BehaviorSubject<string | null>(null);
+  public productsSubject = new BehaviorSubject<Product[]>([]);
+  public loadingSubject = new BehaviorSubject<boolean>(false);
+  public errorSubject = new BehaviorSubject<string | null>(null);
 
-  private pageIndexSubject = new BehaviorSubject<number>(0); // 0-based
-  private pageSizeSubject = new BehaviorSubject<number>(10);
-  private totalElementsSubject = new BehaviorSubject<number>(0);
+  public pageIndexSubject = new BehaviorSubject<number>(0); // 0-based
+  public pageSizeSubject = new BehaviorSubject<number>(9);
+  public totalElementsSubject = new BehaviorSubject<number>(0);
 
   products$ = this.productsSubject.asObservable();
   loading$ = this.loadingSubject.asObservable();
@@ -28,7 +28,7 @@ export class ProductService {
   pageSize$ = this.pageSizeSubject.asObservable();
   totalElements$ = this.totalElementsSubject.asObservable();
 
-  private apiUrl = 'http://localhost:8080/api/products';
+  public apiUrl = 'http://localhost:8080/api/products';
 
   get backendBaseUrl(): string {
     const url = new URL(this.apiUrl);

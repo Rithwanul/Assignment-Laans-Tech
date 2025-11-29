@@ -19,17 +19,17 @@
 
   <!-- Card view -->
   <section class="card-section">
+    <!-- async ONCE, reuse 'products' -->
     <ng-container *ngIf="products$ | async as products">
       <div class="card-grid" *ngIf="products.length; else noDataTpl">
-        <article class="product-card" *ngFor="let product of products">
+        <article
+          class="product-card"
+          *ngFor="let product of products | slice : 0 : 8"
+          [routerLink]="['/products', product.id]"
+          (click)="cardClicked(product)"
+        >
           <div class="image-wrapper" *ngIf="product.imageUrl">
-            <!-- ✅ use helper -->
-            <img
-              *ngIf="product.imageUrl"
-              [src]="getImageUrl(product)"
-              [alt]="product.metadata.name"
-              class="thumb"
-            />
+            <img [src]="getImageUrl(product)" [alt]="product.metadata.name" class="thumb" />
           </div>
 
           <div class="card-body">
@@ -41,6 +41,18 @@
           </div>
 
           <div class="card-footer">
+            <!-- View opens image in new tab, does NOT trigger routerLink -->
+            <a
+              *ngIf="product.imageUrl"
+              class="view-link"
+              [href]="getImageUrl(product)"
+              target="_blank"
+              rel="noopener noreferrer"
+              (click)="$event.stopPropagation()"
+            >
+              View
+            </a>
+
             <span class="price">
               {{ product.metadata.price | currency }}
             </span>
@@ -49,6 +61,32 @@
       </div>
     </ng-container>
   </section>
+
+  <!-- PAGINATION -->
+  <div class="pagination-container" *ngIf="pageCount$ | async as pageCount">
+    <button class="nav-btn" (click)="onPageChange('prev')" [disabled]="(pageIndex$ | async) === 0">
+      ‹
+    </button>
+
+    <div class="page-bullets">
+      <span
+        *ngFor="let page of [].constructor(pageCount); let i = index"
+        class="page-bullet"
+        [class.active]="i === (pageIndex$ | async)"
+        (click)="productService.loadProducts(i)"
+      >
+        {{ i + 1 }}
+      </span>
+    </div>
+
+    <button
+      class="nav-btn"
+      (click)="onPageChange('next')"
+      [disabled]="(pageIndex$ | async) === pageCount - 1"
+    >
+      ›
+    </button>
+  </div>
 
   <ng-template #noDataTpl>
     <div class="no-data">No products yet. Add your first one!</div>

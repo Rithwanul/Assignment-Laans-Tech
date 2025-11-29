@@ -1,0 +1,23 @@
+<div class="details-page" *ngIf="!loading && product; else loadingTpl">
+  <button class="back-btn" (click)="back()">← Back</button>
+
+  <div class="details-card">
+    <div class="image">
+      <img [src]="productService.backendBaseUrl + product.imageUrl" alt="" />
+    </div>
+
+    <div class="info">
+      <h1>{{ product.metadata.name }}</h1>
+      <p class="sku">SKU: {{ product.metadata.sku }}</p>
+      <p class="description">{{ product.metadata.description }}</p>
+
+      <div class="price">
+        {{ product.metadata.price | currency }}
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingTpl>
+  <div class="loading">Loading...</div>
+</ng-template>
