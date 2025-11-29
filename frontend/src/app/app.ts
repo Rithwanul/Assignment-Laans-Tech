@@ -1,14 +1,12 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ProductUploadComponent } from './product-upload/product-upload.component';
+import { ProductListComponent } from './components/product-list.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ProductUploadComponent],
   templateUrl: './app.html',
-  styleUrl: './app.scss',
+  styleUrls: ['./app.scss'],
+  imports: [RouterOutlet, ProductListComponent],
 })
-export class AppComponent {
-  title = 'frontend';
-}
+export class AppComponent {}

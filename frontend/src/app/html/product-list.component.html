@@ -1,0 +1,56 @@
+<div class="products-page">
+  <!-- Header -->
+  <header class="products-header">
+    <div>
+      <h1>Products</h1>
+      <p class="subtitle">Manage your product catalog</p>
+    </div>
+
+    <button class="btn primary" (click)="onNewProduct()">+ New Product</button>
+  </header>
+
+  <!-- Loading / Error -->
+  <div class="status">
+    <div class="loader" *ngIf="loading$ | async">Loading products...</div>
+    <div class="error" *ngIf="error$ | async as err">
+      {{ err }}
+    </div>
+  </div>
+
+  <!-- Card view -->
+  <section class="card-section">
+    <ng-container *ngIf="products$ | async as products">
+      <div class="card-grid" *ngIf="products.length; else noDataTpl">
+        <article class="product-card" *ngFor="let product of products">
+          <div class="image-wrapper" *ngIf="product.imageUrl">
+            <!-- ✅ use helper -->
+            <img
+              *ngIf="product.imageUrl"
+              [src]="getImageUrl(product)"
+              [alt]="product.metadata.name"
+              class="thumb"
+            />
+          </div>
+
+          <div class="card-body">
+            <h2 class="product-name">{{ product.metadata.name }}</h2>
+            <p class="sku">SKU: {{ product.metadata.sku }}</p>
+            <p class="description">
+              {{ product.metadata.description }}
+            </p>
+          </div>
+
+          <div class="card-footer">
+            <span class="price">
+              {{ product.metadata.price | currency }}
+            </span>
+          </div>
+        </article>
+      </div>
+    </ng-container>
+  </section>
+
+  <ng-template #noDataTpl>
+    <div class="no-data">No products yet. Add your first one!</div>
+  </ng-template>
+</div>

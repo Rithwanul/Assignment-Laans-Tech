@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+/* import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 
 import { ProductService } from '../service/product.service';
-import { Product, ProductMetadata, ProductPage } from '../models/product';
+import { Product } from '../models/product/product';
 import { environment } from '../../environments/environment';
+import { ProductMetadata } from '../models/product/product-metadata';
+import { ProductPage } from '../models/product/product-page';
 
 @Component({
   selector: 'app-product-upload',
@@ -101,3 +103,4 @@ export class ProductUploadComponent implements OnInit {
     return `${this.imageBaseUrl}${product.imageUrl}`;
   }
 }
+ */
