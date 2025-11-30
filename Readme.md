@@ -1,7 +1,6 @@
 Full-Stack Application (Spring Boot + Angular)
 
-A full-stack web application consisting of all the points of the assignment:
-
+A full-stack web application consisting of:
 
 Backend: Spring Boot (Gradle) REST API
 
