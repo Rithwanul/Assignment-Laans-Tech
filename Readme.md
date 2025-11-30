@@ -1,17 +1,15 @@
-Full-Stack Application (Spring Boot + Angular)
+# Full-Stack Application (Spring Boot + Angular)
 
 A full-stack web application consisting of:
 
-Backend: Spring Boot (Gradle) REST API
+- **Backend:** Spring Boot (Gradle) REST API  
+- **Frontend:** Angular SPA  
+- **Local File Storage:** Configurable via `application.yml`  
+- **API Documentation:** Swagger UI  
 
-Frontend: Angular SPA
+---
 
-Local File Storage: Configurable via application.yml
-
-API Documentation: Swagger UI
-
-📁 Project Structure
-.
+## 📁 Project Structure
 ├── backend/         # Spring Boot application (Gradle)
 ├── frontend/        # Angular application
 ├── docker-data/     # (optional) docker volumes / runtime data
