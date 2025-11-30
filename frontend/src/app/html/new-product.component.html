@@ -1,0 +1,140 @@
+<div class="new-product">
+  <!-- HEADER -->
+  <header class="new-product__header">
+    <div class="new-product__title-block">
+      <h1>New Product</h1>
+      <p class="subtitle">Create and add a new product to your catalog</p>
+    </div>
+
+    <div class="new-product__actions desktop-only">
+      <button class="btn" (click)="onCancel()">Cancel</button>
+      <button class="btn primary" [disabled]="isSubmitting" (click)="onSubmit()">
+        {{ isSubmitting ? 'Saving...' : 'Save Product' }}
+      </button>
+    </div>
+  </header>
+
+  <!-- RESPONSIVE GRID LAYOUT -->
+  <div class="new-product__grid">
+    <!-- LEFT SIDE — FORM -->
+    <section class="new-product__form-section">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+        <!-- PRODUCT NAME -->
+        <div class="form-group" [class.invalid]="f['name'].invalid && f['name'].touched">
+          <label>Product Name <span class="required">*</span></label>
+          <input type="text" formControlName="name" placeholder="Wireless Speaker" />
+          <p class="error-msg" *ngIf="f['name'].hasError('required') && f['name'].touched">
+            Name is required.
+          </p>
+        </div>
+
+        <!-- SKU -->
+        <div class="form-group" [class.invalid]="f['sku'].invalid && f['sku'].touched">
+          <label>SKU <span class="required">*</span></label>
+          <input type="text" formControlName="sku" placeholder="WS-1001" />
+          <p class="error-msg" *ngIf="f['sku'].hasError('required') && f['sku'].touched">
+            SKU is required.
+          </p>
+        </div>
+
+        <!-- PRICE -->
+        <div class="form-group" [class.invalid]="f['price'].invalid && f['price'].touched">
+          <label>Price <span class="required">*</span></label>
+          <div class="price-input">
+            <span class="currency">$</span>
+            <input type="number" formControlName="price" min="0" step="0.01" placeholder="0.00" />
+          </div>
+          <p class="error-msg" *ngIf="f['price'].hasError('required') && f['price'].touched">
+            Price is required.
+          </p>
+          <p class="error-msg" *ngIf="f['price'].hasError('min') && f['price'].touched">
+            Price cannot be negative.
+          </p>
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div class="form-group">
+          <label>Description</label>
+          <textarea
+            formControlName="description"
+            rows="4"
+            placeholder="Short description..."
+          ></textarea>
+        </div>
+
+        <!-- MOBILE ACTIONS -->
+        <div class="new-product__actions mobile-only">
+          <button class="btn" type="button" (click)="onCancel()">Cancel</button>
+          <button class="btn primary" type="submit" [disabled]="isSubmitting">
+            {{ isSubmitting ? 'Saving...' : 'Save Product' }}
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- RIGHT SIDE — IMAGES -->
+    <section class="new-product__images-section">
+      <h2>Product Images</h2>
+      <p class="hint">Upload one or more images. First image becomes the thumbnail.</p>
+
+      <!-- FILE INPUT -->
+      <label class="upload-box">
+        <input type="file" multiple accept="image/*" (change)="onFilesSelected($event)" />
+        <div class="upload-box__inner">
+          <div class="icon">📷</div>
+          <div>
+            <p class="title">Click to upload</p>
+            <p class="subtitle">or drag & drop image files</p>
+          </div>
+        </div>
+      </label>
+
+      <p class="selected-info" *ngIf="selectedFiles.length">
+        {{ selectedFiles.length }} file(s) selected
+      </p>
+
+      <p class="error-msg" *ngIf="uploadError">{{ uploadError }}</p>
+
+      <!-- PROGRESS BAR -->
+      <div class="progress" *ngIf="isSubmitting">
+        <span>{{ uploadProgress }}%</span>
+        <div class="progress__bar">
+          <div class="progress__fill" [style.width.%]="uploadProgress"></div>
+        </div>
+      </div>
+
+      <!-- IMAGE PREVIEW GRID -->
+      <div class="preview-grid" *ngIf="previewUrls.length">
+        <div class="preview-card" *ngFor="let url of previewUrls; let i = index">
+          <button class="remove-btn" type="button" (click)="removeImage(i)">✕</button>
+          <img [src]="url" alt="Preview" />
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ALERT OVERLAY -->
+  <div class="upload-alert-backdrop" *ngIf="showAlert">
+    <div class="upload-alert">
+      <div class="upload-alert__header">
+        <h3>{{ alertTitle }}</h3>
+        <button class="close-btn" type="button" (click)="onCloseAlert()">✕</button>
+      </div>
+
+      <p class="upload-alert__message">
+        {{ alertMessage }}
+      </p>
+
+      <div class="upload-alert__progress" *ngIf="!uploadComplete">
+        <div class="upload-alert__progress-bar">
+          <div class="upload-alert__progress-fill" [style.width.%]="uploadProgress"></div>
+        </div>
+        <span class="upload-alert__percent">{{ uploadProgress }}%</span>
+      </div>
+
+      <div class="upload-alert__actions" *ngIf="uploadComplete">
+        <button class="btn primary" type="button" (click)="onCloseAlert()">Back to Products</button>
+      </div>
+    </div>
+  </div>
+</div>

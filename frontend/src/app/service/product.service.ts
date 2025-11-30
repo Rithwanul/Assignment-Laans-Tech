@@ -1,7 +1,7 @@
 // src/app/service/product.service.ts
 
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpParams, HttpRequest } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { tap, catchError, map } from 'rxjs/operators';
 
@@ -18,7 +18,7 @@ export class ProductService {
   public errorSubject = new BehaviorSubject<string | null>(null);
 
   public pageIndexSubject = new BehaviorSubject<number>(0); // 0-based
-  public pageSizeSubject = new BehaviorSubject<number>(9);
+  public pageSizeSubject = new BehaviorSubject<number>(6);
   public totalElementsSubject = new BehaviorSubject<number>(0);
 
   products$ = this.productsSubject.asObservable();
@@ -122,6 +122,22 @@ export class ProductService {
       })
     );
   }
+
+  bulkUploadProducts(formData: FormData): Observable<HttpEvent<any>> {
+    console.log('${this.apiUrl}/bulk-upload');
+    return this.http.post<any>(`${this.apiUrl}/bulk-upload`, formData, {
+      observe: 'events',
+      reportProgress: true,
+    });
+  }
+
+  // addProductWithImages(formData: FormData): Observable<HttpEvent<any>> {
+  //   const req = new HttpRequest('POST', this.apiUrl, formData, {
+  //     reportProgress: true, // enables UploadProgress events
+  //   });
+
+  //   return this.http.request(req);
+  // }
 
   bulkUpload(metadataList: ProductMetadata[], images: File[]): Observable<Product[]> {
     const formData = new FormData();

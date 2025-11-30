@@ -62,5 +62,6 @@ export class ProductListComponent implements OnInit {
 
   onNewProduct(): void {
     console.log('new product clicked');
+      this.router.navigate(['/products/new']);
   }
 }
